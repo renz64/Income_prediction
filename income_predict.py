@@ -34,6 +34,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
 from sklearn.ensemble import RandomForestClassifier 
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import *
 
 ########################
 
@@ -62,7 +63,7 @@ def bins(x, n):
 # Function for z-standardization of a numerical column
 def norm(col): 
     x = np.array(col).astype(float)
-    X = pd.DataFrame(x)
+    X = pd.DataFrame(x) 
     y = StandardScaler().fit(X).transform(X)
     return y
 
@@ -95,12 +96,39 @@ def _check5_main():
     print('\nThe adult dataframe with the clustered "labels":')
     print(adult.head())
 
-# Main function: Print the classifier and accuracy
-def _check6_main(): 
-    print ('\n\nRandom Forest classifier\n')
-    print ('Accuracy of the prediction:')
-    print(acc)
+# Main function: Save the predicted and real test labels as a csv file
+def _check6_main():   
     adult_analysis.to_csv("renjini-result.csv", sep=',', header = True, index = False)
+
+# Main function: Print the classifier and accuracy
+def _check7_main(): 
+    print ('\n\nRandom Forest classifier\n')
+    print ("\n\nConfusion matrix:\n", CM)
+    print ("\nTP, TN, FP, FN:", tp, ",", tn, ",", fp, ",", fn)
+    print ("\nAccuracy rate:", AR)
+    print ("\nError rate:", ER)
+    print ("\nPrecision:", np.round(P, 2))
+    print ("\nRecall:", np.round(R, 2))
+    print ("\nF1 score:", np.round(F1, 2))
+    print ("\nTP rates:", np.round(tpr, 2))
+    print ("\nFP rates:", np.round(fpr, 2))
+    print ("\nProbability thresholds:", np.round(th, 2))
+    print ("\nAUC score (using auc function):", np.round(AUC, 2))
+    print ("\nAUC score (using roc_auc_score function):", np.round(roc_auc_score(Y_test, Y_preds), 2), "\n")
+
+# Main function: Plot the ROC
+def _check8_main():
+    plt.figure()
+    plt.title('Receiver Operating Characteristic curve')
+    plt.xlim([0.0, 1.0])
+    plt.ylim([0.0, 1.05])
+    plt.xlabel('FALSE Positive Rate')
+    plt.ylabel('TRUE Positive Rate')
+    plt.plot(fpr, tpr, label='ROC curve (area = %0.2f)' % AUC)
+    plt.plot([0, 1], [0, 1], color='navy', linestyle='--') # reference line for random classifier
+    plt.legend()
+    plt.show()
+
 
 ########################
 
@@ -208,7 +236,7 @@ adult.loc[adult.loc[:, 'workclass'] == ' Without-pay', 'workclass'] = 'Unemploye
 adult.loc[adult.loc[:, 'workclass'] == ' Never-worked', 'workclass'] = 'Unemployed'
 adult.loc[adult.loc[:, 'workclass'] == ' Private', 'workclass'] = 'Private'
 # Private seems highest, so impute '?' with Private
-adult.loc[adult.loc[:, 'workclass'] == ' ?', 'workclass'] = 'Private'
+adult.loc[adult.loc[:, 'workclass'] == '?', 'workclass'] = 'Private'
 # add dummy variables
 adult.loc[:, "Government"] = (adult.loc[:, "workclass"] == "Government").astype(int)
 adult.loc[:, "Private"] = (adult.loc[: , "workclass"] == "Private").astype(int)
@@ -218,6 +246,10 @@ adult.drop('workclass', axis = 1, inplace = True)
 # add dummy variables for the sex column and delete parent column
 adult[['Female', 'Male']] = pd.get_dummies(adult['sex'])
 adult.drop('sex', axis = 1, inplace = True)
+
+# Replace the '<=50K' and '>50K' with 1 and 0 respectively, in the income column
+adult.loc[(adult.loc[:, 'income'] == ' <=50K'), 'income'] = 1
+adult.loc[(adult.loc[:, 'income'] == ' >50K'), 'income'] = 0
 
 # Print the edited dataframe
 if __name__ == "__main__":
@@ -240,42 +272,95 @@ if __name__ == "__main__":
 	_check5_main()
 
 ########################
+# Supervised learning: Is it possbile to classify the individulas into 2 income classes based on these 15 attributes?
 
 # Split data into training and test sets
-X = adult[['fnlwgt', 'capital-gain', 'capital-loss', 'Binned_age', 'Binned_hours-per-week', 'Bachelor', 'Master', 'Primary', 'Professional', 'Government', 'Private', 'Unemployed', 'Female', 'Male']]
+X = adult[['capital-gain', 'capital-loss', 'Binned_age', 'Binned_hours-per-week', 'Bachelor', 'Master', 'Primary', 'Professional', 'Government', 'Private', 'Unemployed', 'Female', 'Male', 'labels']]
+# Note: I removed the 'fnlwgt' column from analysis, because the removal increased the accuracy of the predictions.
 # The 'income' column was used as the expert label column, based on the original data from the UCI database
-y = adult['income']
+Y = adult['income']
 # Specifying model training on 80% of the data, by using a test-size of 20%
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20)
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = 0.20)
+
+########################
 
 # Classification by Random Forest classifier
 estimators = 10 # number of trees parameter
 mss = 2 # mininum samples split parameter
 clf = RandomForestClassifier(n_estimators=estimators, min_samples_split=mss) # default parameters are fine
 # Fit the model using the training set
-clf.fit(X_train, y_train)
+clf.fit(X_train, Y_train)
 # Predict for the test set
-y_preds = clf.predict(X_test)
-
-########################
+Y_preds = clf.predict(X_test)
+# Y_prob = clf.predict_proba(X_test)
 
 # Create a datframe of actual and predicted classifications of the test set
 adult_analysis = pd.DataFrame()
-adult_analysis['Actual'] = y_test
-adult_analysis['Predicted'] = y_preds
-acc = sum(y_preds == y_test)/len(y_preds)
+adult_analysis['Actual'] = Y_test
+adult_analysis['Predicted'] = Y_preds
 
-# Print the classifier and accuracy
+# Save the adult_analysis dataframe as a csv
 if __name__ == "__main__":
-	_check6_main()
+    _check6_main()
 
-########################
+# Metrics analyses
+# Confusion Matrix using the default probability threshold of 0.5
+CM = confusion_matrix(Y_test, Y_preds)
+# TP, TN, FP, FN
+tn, fp, fn, tp = CM.ravel()
+# Accuracy rate
+AR = accuracy_score(Y_test, Y_preds)
+# Error rate
+ER = 1.0 - AR
+# Precision
+P = precision_score(Y_test, Y_preds)
+# Recall
+R = recall_score(Y_test, Y_preds)
+# F1 score
+F1 = f1_score(Y_test, Y_preds)
+# ROC analysis
+# TP rates, FP rates and Probability thresholds
+fpr, tpr, th = roc_curve(Y_test, Y_preds)
+# AUC score (using auc function)
+AUC = auc(fpr, tpr)
+
+# Print the analysis metrics
+if __name__ == "__main__":
+	_check7_main()
+
+# Plot the ROC
+if __name__ == "__main__":
+	_check8_main()
+
+####################
 
 '''
-Analysis: 
+The attributes used were as follows.
+fnlwgt: Numerical, z-standardized values
+capital-gain: Numerical, z-standardized values 
+capital-loss: Numerical, z-standardized values
+Binned_age: The numerical 'age' column, binned and categorized
+Binned_hours-per-week: The numerical 'hours-per-week' column, binned and categorized
+Male: Categorical column denoting the gender
+Female: Categorical column denoting the gender
+Primary: Categorical column denoting the education level, derived from the 'education-num' attribute
+Bachelor: Categorical column denoting the education level, derived from the 'education-num' attribute
+Master: Categorical column denoting the education level, derived from the 'education-num' attribute
+Professional: Categorical column denoting the education level, derived from the 'education-num' attribute
+Private: One hot encoded category derived from the 'workclass' column 
+Government: One hot encoded category derived from the 'workclass' column
+Unemployed: One hot encoded category derived from the 'workclass' column
+income: Expert label column denoting whether the calssification is <=50000 or >50000
+
+Relevant questions: 
+1. Do the age, education level or gender of the individuals affect their annual income?
+2. What is the effect of fnlwgt, capital-loss and capital-gain variables on the annual income? 
+3. How much does work-hours of the individual influence the individual's annual income? For example, is there a direct correlation between the work-hours and income?
+4. Is the annual income affected by the workclass/employment status?
+
 For performing an unsupervised K-means clustering, the 14 attributes in the adult dataframe except the 'income' column, were loaded into a new dataframe termed 'adult_k'. The new dataframe had 14 columns and all 32297 instances. After clustering, the K-means transformed 'labels' were appended as a 16th column to the original 'adult' dataframe. 
 
-I decided to use the robust random forest classifier to build and test the model. A Random Forest classification was performed to predict the income of the test data, after training the dataset with 80% of the data. A preliminary analysis showed that the accuracy of the prediction was approximately 80%, using the random forest classifier on the attributes. 
-The predicted labels and real values were then loaded into a new dataframe labeled 'adult_analysis', and saved as a csv file. 
+I decided to use the robust random forest classifier to build and test the model. I found that excluding the fnlwgt column improved the accuracy of the predictions, so removed it. A Random Forest classification was performed to predict the income of the test data, after training the dataset with 80% of the data. The predicted labels and real values were then loaded into a new dataframe labeled 'adult_analysis', and saved as a csv file.
+ I used the default probability threshold of 0.5 for constructing the confusion matrix and the rest of the metrics. The preliminary analysis showed that the accuracy of the prediction was approximately 84%, using the random forest classifier on the attributes. The analysis metrics were printed along with the ROC curve. The AUC score was 0.72. 
 
 '''
