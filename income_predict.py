@@ -33,6 +33,7 @@ import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
 from sklearn.ensemble import RandomForestClassifier 
+from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import *
 
@@ -67,73 +68,6 @@ def norm(col):
     y = StandardScaler().fit(X).transform(X)
     return y
 
-# Main function: To print the initial dataframe 
-def _check1_main(): 
-    print('The initial adult dataframe: ')
-    print(adult.head())
-
-# Main function: Plot a histogram of the standardized fnlwgt data
-def _check2_main(): 
-    print('\nThe fnlwgt data plot after normlization by z-standardization: ')
-    plt.hist(adult["fnlwgt"]);
-    plt.title('The Z-standardized fnlwgt data')
-    plt.xlabel('Final Weight')
-    plt.ylabel('Frequency')
-    plt.show()
-
-# Main function: Print the edited dataframe
-def _check3_main(): 
-    print('\nBinned age and hours-per-week columns added to the dataframe: ')
-    print(adult.head())
-
-# Main function: Print the edited dataframe
-def _check4_main(): 
-    print('\nThe adult dataframe with the dummy variables:')
-    print(adult.head())
-
-# Main function: Print the edited dataframe
-def _check5_main(): 
-    print('\nThe adult dataframe with the clustered "labels":')
-    print(adult.head())
-
-# Main function: Save the predicted and real test labels as a csv file
-def _check6_main():   
-    adult_analysis.to_csv("renjini-result.csv", sep=',', header = True, index = False)
-
-# Main function: Print the classifier and accuracy
-def _check7_main(): 
-    print ('\n\nRandom Forest classifier\n')
-    print ("\n\nConfusion matrix:\n", CM)
-    print ("\nTP, TN, FP, FN:", tp, ",", tn, ",", fp, ",", fn)
-    print ("\nAccuracy rate:", AR)
-    print ("\nError rate:", ER)
-    print ("\nPrecision:", np.round(P, 2))
-    print ("\nRecall:", np.round(R, 2))
-    print ("\nF1 score:", np.round(F1, 2))
-    print ("\nTP rates:", np.round(tpr, 2))
-    print ("\nFP rates:", np.round(fpr, 2))
-    print ("\nProbability thresholds:", np.round(th, 2))
-    print ("\nAUC score (using auc function):", np.round(AUC, 2))
-    print ("\nAUC score (using roc_auc_score function):", np.round(roc_auc_score(Y_test, Y_preds), 2), "\n")
-
-# Main function: Plot the ROC
-def _check8_main():
-    plt.figure()
-    plt.title('Receiver Operating Characteristic curve')
-    plt.xlim([0.0, 1.0])
-    plt.ylim([0.0, 1.05])
-    plt.xlabel('FALSE Positive Rate')
-    plt.ylabel('TRUE Positive Rate')
-    plt.plot(fpr, tpr, label='ROC curve (area = %0.2f)' % AUC)
-    plt.plot([0, 1], [0, 1], color='navy', linestyle='--') # reference line for random classifier
-    plt.legend()
-    plt.show()
-
-
-########################
-
-# Main Body
-
 # Download and load data from the url: http://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.names
 url = "http://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data"
 adult1 = pd.read_csv(url, header=None)
@@ -143,10 +77,6 @@ adult1.columns = ["age", "workclass", "fnlwgt", "education", "education-num", "m
 
 # Select the columns needed to fulfill the current objectives; save as a new dataframe
 adult = adult1.loc[:, ['age', 'workclass', 'fnlwgt', 'education-num', 'sex', "capital-gain", "capital-loss", 'hours-per-week', 'income' ]]
-
-# Check the data attributes and format
-if __name__ == "__main__":
-	_check1_main()
 
 ########################
 
@@ -173,9 +103,6 @@ adult = adult.loc[~high2, :]
 # Normalize the fnlwgt column; plot the normalized fnlwgt data.
 col = adult["fnlwgt"]
 adult["fnlwgt"] = norm(col)
-# Plot a histogram of the standardized fnlwgt data
-#if __name__ == "__main__":
-#	_check2_main()
 
 # Normalize the capital-gain column
 col = adult["capital-gain"]
@@ -198,16 +125,15 @@ adult.loc[hasnan, "age"] = np.nanmedian(adult.loc[:,"age"])
 # Bin the numerical columns (age, hours-per-week)kmeans = KMeans(n_clusters=5).fit(adult_k)
 # age - Equal-width Binning using numpy
 x = np.array(adult['age'])
-adult['Binned_age'] = bins(x, 3)
+adult['Binned_age'] = bins(x, 6)
 # hours-per-week - Equal-width Binning using numpy
 x = np.array(adult['hours-per-week'])
-adult['Binned_hours-per-week'] = bins(x, 3)
-# Delete obsolete columns: age, hours-per-week
+adult['Binned_hours-per-week'] = bins(x, 6)
+
+# Delete obsolete column age and hours-per-week columns
 adult.drop('age', axis = 1, inplace = True)
 adult.drop('hours-per-week', axis = 1, inplace = True)
-# Print the edited dataframe
-if __name__ == "__main__":
-	_check3_main()
+
 
 ########################
 # Decode education-num column, impute categories and consolidate
@@ -219,14 +145,8 @@ adult.loc[adult.loc[:, 'education-num'] ==15, 'education-num'] = 'Professional'
 adult.loc[adult.loc[:, 'education-num'] ==16, 'education-num'] = 'Doctorate'
 # Consolidate professional and doctorate into professional
 adult.loc[adult.loc[:, 'education-num'] =='Doctorate', 'education-num'] = 'Professional'
-# add dummy variables
-adult[['Bachelor', 'Master', 'Primary', 'Professional']] = pd.get_dummies(adult['education-num'])
-# Delete the obsolete education-num column
-adult.drop('education-num', axis = 1, inplace = True)
 
-########################
-
-# Decode the other categorical variable,workclass; impute categories, consolidate and add dummy variables
+# Decode the other categorical variable, workclass; impute categories, consolidate and add dummy variables
 adult.loc[(adult.loc[:, 'workclass'] == ' State-gov'), 'workclass'] = 'Government'
 adult.loc[adult.loc[:, 'workclass'] == ' Self-emp-not-inc', 'workclass'] = 'Unemployed'
 adult.loc[adult.loc[:, 'workclass'] == ' Federal-gov', 'workclass'] = 'Government'
@@ -236,13 +156,20 @@ adult.loc[adult.loc[:, 'workclass'] == ' Without-pay', 'workclass'] = 'Unemploye
 adult.loc[adult.loc[:, 'workclass'] == ' Never-worked', 'workclass'] = 'Unemployed'
 adult.loc[adult.loc[:, 'workclass'] == ' Private', 'workclass'] = 'Private'
 # Private seems highest, so impute '?' with Private
-adult.loc[adult.loc[:, 'workclass'] == '?', 'workclass'] = 'Private'
+adult.loc[adult.loc[:, 'workclass'] == ' ?', 'workclass'] = 'Private'
+# Save the dataframe as a copy for plotting purpose
+adult2 = adult.copy()
 # add dummy variables
 adult.loc[:, "Government"] = (adult.loc[:, "workclass"] == "Government").astype(int)
 adult.loc[:, "Private"] = (adult.loc[: , "workclass"] == "Private").astype(int)
 adult.loc[:, "Unemployed"] = (adult.loc[:, "workclass"] == "Unemployed").astype(int)
 adult.drop('workclass', axis = 1, inplace = True)
-########################
+
+# add dummy variables for the categorical column education-num
+adult[['Bachelor', 'Master', 'Primary', 'Professional']] = pd.get_dummies(adult['education-num'])
+# Delete the obsolete education-num column
+adult.drop('education-num', axis = 1, inplace = True)
+
 # add dummy variables for the sex column and delete parent column
 adult[['Female', 'Male']] = pd.get_dummies(adult['sex'])
 adult.drop('sex', axis = 1, inplace = True)
@@ -251,14 +178,10 @@ adult.drop('sex', axis = 1, inplace = True)
 adult.loc[(adult.loc[:, 'income'] == ' <=50K'), 'income'] = 1
 adult.loc[(adult.loc[:, 'income'] == ' >50K'), 'income'] = 0
 
-# Print the edited dataframe
-if __name__ == "__main__":
-	_check4_main()
-
 ########################
 
 # Remove the expert label column 'income' and save as another dataframe
-adult_k = adult.drop('income', axis = 1)
+adult_k = adult.loc[:, ['fnlwgt', 'capital-gain', 'capital-loss', 'Binned_age', 'Binned_hours-per-week', 'Bachelor', 'Master', 'Primary', 'Professional', 'Government', 'Private', 'Unemployed', 'Female', 'Male']]
 # Use scikit-learn to perform clustering
 kmeans = KMeans(n_clusters=6).fit(adult_k)
 Labels = kmeans.labels_
@@ -267,15 +190,11 @@ ClusterCentroids = pd.DataFrame(kmeans.cluster_centers_)
 adult.loc[:, 'labels'] = Labels
 # plt.hist(adult['labels']);
 
-# Print the edited dataframe
-if __name__ == "__main__":
-	_check5_main()
-
 ########################
 # Supervised learning: Is it possbile to classify the individulas into 2 income classes based on these 15 attributes?
 
 # Split data into training and test sets
-X = adult[['capital-gain', 'capital-loss', 'Binned_age', 'Binned_hours-per-week', 'Bachelor', 'Master', 'Primary', 'Professional', 'Government', 'Private', 'Unemployed', 'Female', 'Male', 'labels']]
+X = adult[['fnlwgt', 'capital-gain', 'capital-loss', 'Binned_age', 'Binned_hours-per-week', 'Bachelor', 'Master', 'Primary', 'Professional', 'Government', 'Private', 'Unemployed', 'Female', 'Male', 'labels']]
 # Note: I removed the 'fnlwgt' column from analysis, because the removal increased the accuracy of the predictions.
 # The 'income' column was used as the expert label column, based on the original data from the UCI database
 Y = adult['income']
@@ -283,7 +202,6 @@ Y = adult['income']
 X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = 0.20)
 
 ########################
-
 # Classification by Random Forest classifier
 estimators = 10 # number of trees parameter
 mss = 2 # mininum samples split parameter
@@ -292,16 +210,6 @@ clf = RandomForestClassifier(n_estimators=estimators, min_samples_split=mss) # d
 clf.fit(X_train, Y_train)
 # Predict for the test set
 Y_preds = clf.predict(X_test)
-# Y_prob = clf.predict_proba(X_test)
-
-# Create a datframe of actual and predicted classifications of the test set
-adult_analysis = pd.DataFrame()
-adult_analysis['Actual'] = Y_test
-adult_analysis['Predicted'] = Y_preds
-
-# Save the adult_analysis dataframe as a csv
-if __name__ == "__main__":
-    _check6_main()
 
 # Metrics analyses
 # Confusion Matrix using the default probability threshold of 0.5
@@ -324,13 +232,146 @@ fpr, tpr, th = roc_curve(Y_test, Y_preds)
 # AUC score (using auc function)
 AUC = auc(fpr, tpr)
 
-# Print the analysis metrics
-if __name__ == "__main__":
-	_check7_main()
+####################
 
-# Plot the ROC
+# Classification by Logistic Regression
+clf = LogisticRegression(solver = 'liblinear')
+clf.fit(X_train, Y_train)
+Y_predsl = clf.predict(X_test)
+# Metrics analyses
+CML = confusion_matrix(Y_test, Y_predsl)
+tnl, fpl, fnl, tpl = CML.ravel()
+ARL = accuracy_score(Y_test, Y_predsl)
+ERL = 1.0 - ARL
+PL = precision_score(Y_test, Y_predsl)
+RL = recall_score(Y_test, Y_predsl)
+F1L = f1_score(Y_test, Y_predsl)
+fprl, tprl, thl = roc_curve(Y_test, Y_predsl)
+AUCL = auc(fprl, tprl)
+
+# Create a datframe of actual and predicted classifications of the test set
+adult_analysis = pd.DataFrame()
+adult_analysis['Actual'] = Y_test
+adult_analysis['RF_Predicted'] = Y_preds
+adult_analysis['LR_Predicted'] = Y_predsl
+
+####################
+
+# Main Body
+
+# Main function: Plot a histogram of the standardized fnlwgt data
+def _zstdplot_main(): 
+    print('\nThe fnlwgt data plot after normlization by z-standardization: ')
+    plt.hist(adult["fnlwgt"]);
+    plt.title('The Z-standardized fnlwgt data')
+    plt.xlabel('Final Weight')
+    plt.ylabel('Frequency')
+    plt.show()
+
+def _edunumplot_main():
+    print('\nPlot of the education-num categorical attribute after data cleaning: ')
+    adult2['education-num'].value_counts().plot(kind='bar');
+    plt.title('Education status')
+    plt.xlabel('Education-score')
+    plt.ylabel('Frequency')
+    plt.show()
+    
+def _workclassplot_main():
+    print('\nPlot of the workclass categorical attribute after data cleaning: ')
+    adult2['workclass'].value_counts().plot(kind='bar')
+    plt.title('Work Class by profession')
+    plt.xlabel('Work Class')
+    plt.ylabel('Frequency')
+    plt.show()
+    
+# Main function: Print the edited dataframe
+def _printdf_main(): 
+    print('\nThe final adult dataframe with the clustered "labels":')
+    print(adult.head())
+
+# Main function: Save the predicted and real test labels as a csv file
+def _csvsave_main():   
+    adult_analysis.to_csv("renjini-result.csv", sep=',', header = True, index = False)
+
+# Main function: Print the classifier and accuracy for the random forest classifier
+def _rfclass_main(): 
+    print ('\nRandom Forest classifier\n')
+    print ("\nConfusion matrix:\n", CM)
+    print ("\nTP, TN, FP, FN:", tp, ",", tn, ",", fp, ",", fn)
+    print ("\nAccuracy rate:", AR)
+    print ("\nError rate:", ER)
+    print ("\nPrecision:", np.round(P, 2))
+    print ("\nRecall:", np.round(R, 2))
+    print ("\nF1 score:", np.round(F1, 2))
+    print ("\nTP rates:", np.round(tpr, 2))
+    print ("\nFP rates:", np.round(fpr, 2))
+    print ("\nProbability thresholds:", np.round(th, 2))
+    print ("\nAUC score (using auc function):", np.round(AUC, 2))
+    print ("\nAUC score (using roc_auc_score function):", np.round(roc_auc_score(Y_test, Y_preds), 2), "\n")
+
+# Main function: Plot the ROC for the RF classifier
+def _rfroc_main():
+    plt.figure()
+    plt.title('Receiver Operating Characteristic curve for the Random Forest Classifier')
+    plt.xlim([0.0, 1.0])
+    plt.ylim([0.0, 1.05])
+    plt.xlabel('FALSE Positive Rate')
+    plt.ylabel('TRUE Positive Rate')
+    plt.plot(fpr, tpr, label='ROC curve (area = %0.2f)' % AUC)
+    plt.plot([0, 1], [0, 1], color='navy', linestyle='--') # reference line for random classifier
+    plt.legend()
+    plt.show()
+
+# Main function: Print the classifier and accuracy
+def _logregclass_main(): 
+    print ('\nLogistic Regression classifier\n')
+    print ("\nConfusion matrix:\n", CML)
+    print ("\nTP, TN, FP, FN:", tpl, ",", tnl, ",", fpl, ",", fnl)
+    print ("\nAccuracy rate:", ARL)
+    print ("\nError rate:", ERL)
+    print ("\nPrecision:", np.round(PL, 2))
+    print ("\nRecall:", np.round(RL, 2))
+    print ("\nF1 score:", np.round(F1L, 2))
+    print ("\nTP rates:", np.round(tprl, 2))
+    print ("\nFP rates:", np.round(fprl, 2))
+    print ("\nProbability thresholds:", np.round(thl, 2))
+    print ("\nAUC score (using auc function):", np.round(AUCL, 2))
+    print ("\nAUC score (using roc_auc_score function):", np.round(roc_auc_score(Y_test, Y_predsl), 2), "\n")
+
+# Main function: Plot the ROC
+def _logregroc_main():
+    plt.figure()
+    plt.title('Receiver Operating Characteristic curve for Logistic Regression Classifier')
+    plt.xlim([0.0, 1.0])
+    plt.ylim([0.0, 1.05])
+    plt.xlabel('FALSE Positive Rate')
+    plt.ylabel('TRUE Positive Rate')
+    plt.plot(fprl, tprl, label='ROC curve (area = %0.2f)' % AUCL)
+    plt.plot([0, 1], [0, 1], color='navy', linestyle='--') # reference line for random classifier
+    plt.legend()
+    plt.show()
+
+########################
+
 if __name__ == "__main__":
-	_check8_main()
+# Plot a histogram of the standardized fnlwgt data
+    _zstdplot_main()
+# Plot a histogram of the categorical education-num attribute
+    _edunumplot_main()
+# Plot a histogram of the categorical workclass column
+    _workclassplot_main()
+# Print the edited dataframe
+    _printdf_main()
+# Save the adult_analysis dataframe as a csv
+    _csvsave_main()
+# Print the analysis metrics for the Random Forest Classifier
+    _rfclass_main()
+# Plot the ROC
+    _rfroc_main()
+# Print the analysis metrics for the Random Forest Classifier
+    _logregclass_main()
+# Plot the ROC
+    _logregroc_main()
 
 ####################
 
@@ -360,7 +401,11 @@ Relevant questions:
 
 For performing an unsupervised K-means clustering, the 14 attributes in the adult dataframe except the 'income' column, were loaded into a new dataframe termed 'adult_k'. The new dataframe had 14 columns and all 32297 instances. After clustering, the K-means transformed 'labels' were appended as a 16th column to the original 'adult' dataframe. 
 
-I decided to use the robust random forest classifier to build and test the model. I found that excluding the fnlwgt column improved the accuracy of the predictions, so removed it. A Random Forest classification was performed to predict the income of the test data, after training the dataset with 80% of the data. The predicted labels and real values were then loaded into a new dataframe labeled 'adult_analysis', and saved as a csv file.
- I used the default probability threshold of 0.5 for constructing the confusion matrix and the rest of the metrics. The preliminary analysis showed that the accuracy of the prediction was approximately 84%, using the random forest classifier on the attributes. The analysis metrics were printed along with the ROC curve. The AUC score was 0.72. 
+I used the random forest and logistic regression classifiers to build and test the models. I found that excluding the fnlwgt column improved the accuracy of the predictions, so removed it. 
+First, a Random Forest classification was performed to predict the income of the test data, after training the dataset with 80% of the data. I found that using the non-binned 'age' and 'hours-per-week' did not yield any worse result with the random forest classifier (data not shown) than with the binned variables. 
+I used the default probability threshold of 0.5 for constructing the confusion matrix and the rest of the metrics. The preliminary analysis showed that the accuracy of the prediction was approximately 84%, using the random forest classifier on the attributes. The analysis metrics were printed along with the ROC curve. The AUC score was 0.70. 
+With the logistic regression classifier, the accuracy of the prediction was approximately 83%. The AUC score was 0.71. 
+Overall, I found that both the calssifiers showed more or less similar predictions, except that logistic regression showed a better recall of around 93%, while random forest maintained recall at 86%. 
+The predicted labels and real values were then loaded into a new dataframe labeled 'adult_analysis', and saved as a csv file.
 
 '''
