@@ -1,0 +1,890 @@
+
+% Default to the notebook output style
+
+    
+
+
+% Inherit from the specified cell style.
+
+
+
+
+    
+\documentclass[11pt]{article}
+
+    
+    
+    \usepackage[T1]{fontenc}
+    % Nicer default font (+ math font) than Computer Modern for most use cases
+    \usepackage{mathpazo}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    
+
+    
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatability definitions
+    \def\gt{>}
+    \def\lt{<}
+    % Document parameters
+    \title{income\_predict}
+    
+    
+    
+
+    % Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    Created on Wed Nov 10 15:03:06 2018 \#\#\#\# Author: Renjini Ramadasan
+Nair
+
+    \hypertarget{description-of-the-data}{%
+\subparagraph{Description of the data:}\label{description-of-the-data}}
+
+Source citation: The data represents the census data from the UCI
+machine learning database
+(http://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data).
+Detailed information can be read by referring to the original
+publication
+(http://robotics.stanford.edu/\textasciitilde{}ronnyk/nbtree.pdf).
+
+Data Cleaning (Optional to read this segment): There were 15 attributes,
+of which I have loaded 9 attributes/columns into a dataframe named
+`adult' for further analyses. The 9 attributes were the age, workclass,
+fnlwgt, education-num, sex, capital-gain, capital-loss, hours-per-week
+and income columns. Of these, age, fnlwgt, capital-gain, capital-loss
+and hours-per-week were numerical attributes and the rest categorical.
+Initially there were 32561 rows. There were no null values in the
+numerical data columns, but were present in some categorical columns.
+Then I performed data cleaning by following the steps outlined below.
+The numerical column `fnlwgt' had outliers, which were replaced with the
+median value, followed by z-standardization. A plotted histogram showed
+that this attribute has a more or less normal distribution. For the
+`capital-gain' and `capital-loss' columns, the rows with a few extreme
+values (\textgreater{}20000 for capital-gain and \textgreater{}3000 for
+capital loss) were removed. These two columns were also standardized by
+z-normalization. The outliers in the age column were replaced with the
+median of the non-null values. For the `age' and `hours-per-week'
+columns, the values were binned into 1 (low), 2 (medium) and 3 (high)
+categories. The obsolete parent columns were deleted. For the
+`education-num', `workclass' and `sex' variables, the categories were
+decoded, imputed and consolidated. The `education-num' variable was
+categorized into Primary (all education lesser than college), Bachelor,
+Master, Professional and Doctorate. The Doctoral was later consolidated
+into Professional. The `workclass' column was categorized into Private,
+Government and Unemployed categories. The missing values in the
+`workclass' column were imputed with the most frequent `Private' value.
+The `sex' column had two categories , `Male' and `Female'. Dummy
+variables were derived for the all three categorical variables and the
+parental columns deleted.
+
+Following the data cleaning, there were 32297 rows and 15 columns in the
+`adult' dataframe. Of the 15, 3 are z-standardized numerical columns
+named `fnlwgt', `capital-gain' and `capital-loss'. `Binned\_age' and
+`Binned\_hours-per-week' are binned columns of the original numerical
+attributes. There were 2, 3 and 4 columns derived by one-hot encoding of
+the `sex', `workclass' and `education-num' categorical columns
+respectively. The `income' column represents the expert labels,
+claasifying each instance into income \textless{}= or \textgreater{}
+than 50000.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{c+c1}{\PYZsh{} Import the Numpy and Pandas libraries}
+        \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+        \PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+        \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+        \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{preprocessing} \PY{k}{import} \PY{n}{StandardScaler}
+        \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{cluster} \PY{k}{import} \PY{n}{KMeans}
+        \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{ensemble} \PY{k}{import} \PY{n}{RandomForestClassifier} 
+        \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{linear\PYZus{}model} \PY{k}{import} \PY{n}{LogisticRegression}
+        \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{model\PYZus{}selection} \PY{k}{import} \PY{n}{train\PYZus{}test\PYZus{}split}
+        \PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{metrics} \PY{k}{import} \PY{o}{*}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{c+c1}{\PYZsh{} Function definitions}
+        
+        \PY{c+c1}{\PYZsh{} Function for checking for outliers in the numeric value columns }
+        \PY{k}{def} \PY{n+nf}{outlier}\PY{p}{(}\PY{n}{var}\PY{p}{)}\PY{p}{:}
+            \PY{n}{high} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{var}\PY{p}{)} \PY{o}{+} \PY{l+m+mi}{2}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{n}{var}\PY{p}{)}
+            \PY{n}{low} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{var}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{l+m+mi}{2}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{n}{var}\PY{p}{)}
+            \PY{n}{outliers} \PY{o}{=} \PY{p}{(}\PY{n}{var} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n}{high}\PY{p}{)} \PY{o}{|} \PY{p}{(}\PY{n}{var} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{n}{low}\PY{p}{)}
+            \PY{k}{return} \PY{n}{outliers}
+        
+        \PY{c+c1}{\PYZsh{} Function to bin numerical columns}
+        \PY{k}{def} \PY{n+nf}{bins}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{n}\PY{p}{)}\PY{p}{:} 
+            \PY{n}{BinWidth} \PY{o}{=} \PY{p}{(}\PY{n+nb}{max}\PY{p}{(}\PY{n}{x}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n+nb}{min}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{)}\PY{o}{/}\PY{n}{n}
+            \PY{n}{bound1} \PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}inf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+            \PY{n}{bound2} \PY{o}{=} \PY{n+nb}{min}\PY{p}{(}\PY{n}{x}\PY{p}{)} \PY{o}{+} \PY{l+m+mi}{1} \PY{o}{*} \PY{n}{BinWidth}
+            \PY{n}{bound3} \PY{o}{=} \PY{n+nb}{min}\PY{p}{(}\PY{n}{x}\PY{p}{)} \PY{o}{+} \PY{l+m+mi}{2} \PY{o}{*} \PY{n}{BinWidth}
+            \PY{n}{bound4} \PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{inf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+            \PY{n}{Binned} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{*}\PY{n+nb}{len}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{)} 
+            \PY{n}{Binned}\PY{p}{[}\PY{p}{(}\PY{n}{bound1} \PY{o}{\PYZlt{}} \PY{n}{x}\PY{p}{)} \PY{o}{\PYZam{}} \PY{p}{(}\PY{n}{x} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{n}{bound2}\PY{p}{)}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{1} \PY{c+c1}{\PYZsh{} Low}
+            \PY{n}{Binned}\PY{p}{[}\PY{p}{(}\PY{n}{bound2} \PY{o}{\PYZlt{}} \PY{n}{x}\PY{p}{)} \PY{o}{\PYZam{}} \PY{p}{(}\PY{n}{x} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{n}{bound3}\PY{p}{)}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{2} \PY{c+c1}{\PYZsh{} Med}
+            \PY{n}{Binned}\PY{p}{[}\PY{p}{(}\PY{n}{bound3} \PY{o}{\PYZlt{}} \PY{n}{x}\PY{p}{)} \PY{o}{\PYZam{}} \PY{p}{(}\PY{n}{x}  \PY{o}{\PYZlt{}} \PY{n}{bound4}\PY{p}{)}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{3} \PY{c+c1}{\PYZsh{} High}
+            \PY{k}{return} \PY{n}{Binned}
+        
+        \PY{c+c1}{\PYZsh{} Function for z\PYZhy{}standardization of a numerical column}
+        \PY{k}{def} \PY{n+nf}{norm}\PY{p}{(}\PY{n}{col}\PY{p}{)}\PY{p}{:} 
+            \PY{n}{x} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{col}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n+nb}{float}\PY{p}{)}
+            \PY{n}{X} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{x}\PY{p}{)} 
+            \PY{n}{y} \PY{o}{=} \PY{n}{StandardScaler}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X}\PY{p}{)}\PY{o}{.}\PY{n}{transform}\PY{p}{(}\PY{n}{X}\PY{p}{)}
+            \PY{k}{return} \PY{n}{y}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{c+c1}{\PYZsh{} Download and load data from the url: http://archive.ics.uci.edu/ml/machine\PYZhy{}learning\PYZhy{}databases/adult/adult.names}
+        \PY{n}{url} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{http://archive.ics.uci.edu/ml/machine\PYZhy{}learning\PYZhy{}databases/adult/adult.data}\PY{l+s+s2}{\PYZdq{}}
+        \PY{n}{adult1} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{n}{url}\PY{p}{,} \PY{n}{header}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} Add column names}
+        \PY{n}{adult1}\PY{o}{.}\PY{n}{columns} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{age}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{workclass}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{fnlwgt}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{education}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{education\PYZhy{}num}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{marital\PYZhy{}status}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{occupation}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{relationship}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{race}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{sex}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{capital\PYZhy{}gain}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{capital\PYZhy{}loss}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{hours\PYZhy{}per\PYZhy{}week}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{native\PYZhy{}country}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{income}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+        
+        \PY{c+c1}{\PYZsh{} Select the columns needed to fulfill the current objectives; save as a new dataframe}
+        \PY{n}{adult} \PY{o}{=} \PY{n}{adult1}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{age}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{workclass}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fnlwgt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{education\PYZhy{}num}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sex}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{capital\PYZhy{}gain}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{capital\PYZhy{}loss}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{hours\PYZhy{}per\PYZhy{}week}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{income}\PY{l+s+s1}{\PYZsq{}} \PY{p}{]}\PY{p}{]}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{c+c1}{\PYZsh{} Remove/replace outliers for the numerical columns. }
+        
+        \PY{c+c1}{\PYZsh{} Replace outliers with median values for the numerical column, fnlwgt.}
+        \PY{n}{outliers} \PY{o}{=} \PY{n}{outlier}\PY{p}{(}\PY{n}{adult}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fnlwgt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+        \PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{outliers}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fnlwgt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{median}\PY{p}{(}\PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{fnlwgt}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} Remove rows with outlier values; For the capital\PYZhy{}gain and capital\PYZhy{}loss variables}
+        \PY{c+c1}{\PYZsh{} capital\PYZhy{}gain}
+        \PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{capital\PYZhy{}gain}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{p}{)}
+        \PY{n}{high1} \PY{o}{=} \PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{capital\PYZhy{}gain}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{\PYZgt{}} \PY{l+m+mi}{20000}
+        \PY{n}{adult} \PY{o}{=} \PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{o}{\PYZti{}}\PY{n}{high1}\PY{p}{,} \PY{p}{:}\PY{p}{]}
+        \PY{c+c1}{\PYZsh{} capital\PYZhy{}loss}
+        \PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{capital\PYZhy{}loss}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{p}{)}
+        \PY{n}{high2} \PY{o}{=} \PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{capital\PYZhy{}loss}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{\PYZgt{}} \PY{l+m+mi}{3000}
+        \PY{n}{adult} \PY{o}{=} \PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{o}{\PYZti{}}\PY{n}{high2}\PY{p}{,} \PY{p}{:}\PY{p}{]}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{c+c1}{\PYZsh{} Normalize values for the numerical columns by z\PYZhy{}standardization}
+        
+        \PY{c+c1}{\PYZsh{} Normalize the fnlwgt column; plot the normalized fnlwgt data.}
+        \PY{n}{col} \PY{o}{=} \PY{n}{adult}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{fnlwgt}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+        \PY{n}{adult}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{fnlwgt}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{norm}\PY{p}{(}\PY{n}{col}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} Normalize the capital\PYZhy{}gain column}
+        \PY{n}{col} \PY{o}{=} \PY{n}{adult}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{capital\PYZhy{}gain}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+        \PY{n}{adult}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{capital\PYZhy{}gain}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{norm}\PY{p}{(}\PY{n}{col}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} Normalize the capital\PYZhy{}loss column}
+        \PY{n}{col} \PY{o}{=} \PY{n}{adult}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{capital\PYZhy{}loss}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+        \PY{n}{adult}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{capital\PYZhy{}loss}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{norm}\PY{p}{(}\PY{n}{col}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{c+c1}{\PYZsh{} Bin the numerical columns (age, hours\PYZhy{}per\PYZhy{}week)kmeans = KMeans(n\PYZus{}clusters=5).fit(adult\PYZus{}k)}
+        \PY{c+c1}{\PYZsh{} age \PYZhy{} Equal\PYZhy{}width Binning using numpy}
+        \PY{n}{x} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{adult}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{age}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+        \PY{n}{adult}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Binned\PYZus{}age}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{bins}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} hours\PYZhy{}per\PYZhy{}week \PYZhy{} Equal\PYZhy{}width Binning using numpy}
+        \PY{n}{x} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{adult}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{hours\PYZhy{}per\PYZhy{}week}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+        \PY{n}{adult}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Binned\PYZus{}hours\PYZhy{}per\PYZhy{}week}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{bins}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} Delete obsolete column age and hours\PYZhy{}per\PYZhy{}week columns}
+        \PY{n}{adult}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{age}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{axis} \PY{o}{=} \PY{l+m+mi}{1}\PY{p}{,} \PY{n}{inplace} \PY{o}{=} \PY{k+kc}{True}\PY{p}{)}
+        \PY{n}{adult}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{hours\PYZhy{}per\PYZhy{}week}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{axis} \PY{o}{=} \PY{l+m+mi}{1}\PY{p}{,} \PY{n}{inplace} \PY{o}{=} \PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}8}]:} \PY{c+c1}{\PYZsh{} Decode education\PYZhy{}num column, impute categories and consolidate}
+        \PY{c+c1}{\PYZsh{} Decode and impute}
+        \PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{education\PYZhy{}num}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{\PYZlt{}}\PY{o}{=}\PY{l+m+mi}{12}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{education\PYZhy{}num}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Primary}\PY{l+s+s1}{\PYZsq{}}
+        \PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{education\PYZhy{}num}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==}\PY{l+m+mi}{13}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{education\PYZhy{}num}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Bachelor}\PY{l+s+s1}{\PYZsq{}}
+        \PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{education\PYZhy{}num}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==}\PY{l+m+mi}{14}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{education\PYZhy{}num}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Master}\PY{l+s+s1}{\PYZsq{}}
+        \PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{education\PYZhy{}num}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==}\PY{l+m+mi}{15}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{education\PYZhy{}num}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Professional}\PY{l+s+s1}{\PYZsq{}}
+        \PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{education\PYZhy{}num}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==}\PY{l+m+mi}{16}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{education\PYZhy{}num}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Doctorate}\PY{l+s+s1}{\PYZsq{}}
+        \PY{c+c1}{\PYZsh{} Consolidate professional and doctorate into professional}
+        \PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{education\PYZhy{}num}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Doctorate}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{education\PYZhy{}num}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Professional}\PY{l+s+s1}{\PYZsq{}}
+        
+        \PY{c+c1}{\PYZsh{} Decode the other categorical variable, workclass; impute categories, consolidate and add dummy variables}
+        \PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{(}\PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{workclass}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ State\PYZhy{}gov}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{workclass}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Government}\PY{l+s+s1}{\PYZsq{}}
+        \PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{workclass}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ Self\PYZhy{}emp\PYZhy{}not\PYZhy{}inc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{workclass}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Unemployed}\PY{l+s+s1}{\PYZsq{}}
+        \PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{workclass}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ Federal\PYZhy{}gov}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{workclass}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Government}\PY{l+s+s1}{\PYZsq{}}
+        \PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{workclass}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ Local\PYZhy{}gov}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{workclass}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Government}\PY{l+s+s1}{\PYZsq{}}
+        \PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{workclass}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ Self\PYZhy{}emp\PYZhy{}inc}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{workclass}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Private}\PY{l+s+s1}{\PYZsq{}}
+        \PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{workclass}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ Without\PYZhy{}pay}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{workclass}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Unemployed}\PY{l+s+s1}{\PYZsq{}}
+        \PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{workclass}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ Never\PYZhy{}worked}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{workclass}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Unemployed}\PY{l+s+s1}{\PYZsq{}}
+        \PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{workclass}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ Private}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{workclass}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Private}\PY{l+s+s1}{\PYZsq{}}
+        \PY{c+c1}{\PYZsh{} Private seems highest, so impute \PYZsq{}?\PYZsq{} with Private}
+        \PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{workclass}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ ?}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{workclass}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Private}\PY{l+s+s1}{\PYZsq{}}
+        \PY{c+c1}{\PYZsh{} Save the dataframe as a copy for plotting purpose}
+        \PY{n}{adult2} \PY{o}{=} \PY{n}{adult}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} add dummy variables}
+        \PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Government}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{workclass}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Government}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n+nb}{int}\PY{p}{)}
+        \PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Private}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:} \PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{workclass}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Private}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n+nb}{int}\PY{p}{)}
+        \PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Unemployed}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{workclass}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Unemployed}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n+nb}{int}\PY{p}{)}
+        \PY{n}{adult}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{workclass}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{axis} \PY{o}{=} \PY{l+m+mi}{1}\PY{p}{,} \PY{n}{inplace} \PY{o}{=} \PY{k+kc}{True}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} add dummy variables for the categorical column education\PYZhy{}num}
+        \PY{n}{adult}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Bachelor}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Master}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Primary}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Professional}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{get\PYZus{}dummies}\PY{p}{(}\PY{n}{adult}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{education\PYZhy{}num}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} Delete the obsolete education\PYZhy{}num column}
+        \PY{n}{adult}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{education\PYZhy{}num}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{axis} \PY{o}{=} \PY{l+m+mi}{1}\PY{p}{,} \PY{n}{inplace} \PY{o}{=} \PY{k+kc}{True}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} add dummy variables for the sex column and delete parent column}
+        \PY{n}{adult}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Female}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Male}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{get\PYZus{}dummies}\PY{p}{(}\PY{n}{adult}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sex}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+        \PY{n}{adult}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sex}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{axis} \PY{o}{=} \PY{l+m+mi}{1}\PY{p}{,} \PY{n}{inplace} \PY{o}{=} \PY{k+kc}{True}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} Replace the \PYZsq{}\PYZlt{}=50K\PYZsq{} and \PYZsq{}\PYZgt{}50K\PYZsq{} with 1 and 0 respectively, in the income column}
+        \PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{(}\PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{income}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ \PYZlt{}=50K}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{income}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{1}
+        \PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{(}\PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{income}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ \PYZgt{}50K}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{income}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{0}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}9}]:} \PY{c+c1}{\PYZsh{} Remove the expert label column \PYZsq{}income\PYZsq{} and save as another dataframe}
+        \PY{n}{adult\PYZus{}k} \PY{o}{=} \PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fnlwgt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{capital\PYZhy{}gain}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{capital\PYZhy{}loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Binned\PYZus{}age}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Binned\PYZus{}hours\PYZhy{}per\PYZhy{}week}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Bachelor}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Master}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Primary}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Professional}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Government}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Private}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Unemployed}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Female}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Male}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}
+        \PY{c+c1}{\PYZsh{} Use scikit\PYZhy{}learn to perform clustering}
+        \PY{n}{kmeans} \PY{o}{=} \PY{n}{KMeans}\PY{p}{(}\PY{n}{n\PYZus{}clusters}\PY{o}{=}\PY{l+m+mi}{6}\PY{p}{)}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{adult\PYZus{}k}\PY{p}{)}
+        \PY{n}{Labels} \PY{o}{=} \PY{n}{kmeans}\PY{o}{.}\PY{n}{labels\PYZus{}}
+        \PY{n}{ClusterCentroids} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{kmeans}\PY{o}{.}\PY{n}{cluster\PYZus{}centers\PYZus{}}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} Add the labels obtained by clustering as a new column to the original dataframe}
+        \PY{n}{adult}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{labels}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{Labels}
+        \PY{c+c1}{\PYZsh{} plt.hist(adult[\PYZsq{}labels\PYZsq{}]);}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}10}]:} \PY{c+c1}{\PYZsh{} Supervised learning: Is it possbile to classify the individulas into 2 income classes based on these 15 attributes?}
+         
+         \PY{c+c1}{\PYZsh{} Split data into training and test sets}
+         \PY{n}{X} \PY{o}{=} \PY{n}{adult}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fnlwgt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{capital\PYZhy{}gain}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{capital\PYZhy{}loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Binned\PYZus{}age}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Binned\PYZus{}hours\PYZhy{}per\PYZhy{}week}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Bachelor}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Master}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Primary}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Professional}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Government}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Private}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Unemployed}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Female}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Male}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{labels}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}
+         \PY{c+c1}{\PYZsh{} Note: I removed the \PYZsq{}fnlwgt\PYZsq{} column from analysis, because the removal increased the accuracy of the predictions.}
+         \PY{c+c1}{\PYZsh{} The \PYZsq{}income\PYZsq{} column was used as the expert label column, based on the original data from the UCI database}
+         \PY{n}{Y} \PY{o}{=} \PY{n}{adult}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{income}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+         \PY{c+c1}{\PYZsh{} Specifying model training on 80\PYZpc{} of the data, by using a test\PYZhy{}size of 20\PYZpc{}}
+         \PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{X\PYZus{}test}\PY{p}{,} \PY{n}{Y\PYZus{}train}\PY{p}{,} \PY{n}{Y\PYZus{}test} \PY{o}{=} \PY{n}{train\PYZus{}test\PYZus{}split}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{Y}\PY{p}{,} \PY{n}{test\PYZus{}size} \PY{o}{=} \PY{l+m+mf}{0.20}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} \PY{c+c1}{\PYZsh{} Classification by Random Forest classifier}
+         \PY{n}{estimators} \PY{o}{=} \PY{l+m+mi}{10} \PY{c+c1}{\PYZsh{} number of trees parameter}
+         \PY{n}{mss} \PY{o}{=} \PY{l+m+mi}{2} \PY{c+c1}{\PYZsh{} mininum samples split parameter}
+         \PY{n}{clf} \PY{o}{=} \PY{n}{RandomForestClassifier}\PY{p}{(}\PY{n}{n\PYZus{}estimators}\PY{o}{=}\PY{n}{estimators}\PY{p}{,} \PY{n}{min\PYZus{}samples\PYZus{}split}\PY{o}{=}\PY{n}{mss}\PY{p}{)} \PY{c+c1}{\PYZsh{} default parameters are fine}
+         \PY{c+c1}{\PYZsh{} Fit the model using the training set}
+         \PY{n}{clf}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{Y\PYZus{}train}\PY{p}{)}
+         \PY{c+c1}{\PYZsh{} Predict for the test set}
+         \PY{n}{Y\PYZus{}preds} \PY{o}{=} \PY{n}{clf}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{c+c1}{\PYZsh{} Metrics analyses}
+         \PY{c+c1}{\PYZsh{} Confusion Matrix using the default probability threshold of 0.5}
+         \PY{n}{CM} \PY{o}{=} \PY{n}{confusion\PYZus{}matrix}\PY{p}{(}\PY{n}{Y\PYZus{}test}\PY{p}{,} \PY{n}{Y\PYZus{}preds}\PY{p}{)}
+         \PY{c+c1}{\PYZsh{} TP, TN, FP, FN}
+         \PY{n}{tn}\PY{p}{,} \PY{n}{fp}\PY{p}{,} \PY{n}{fn}\PY{p}{,} \PY{n}{tp} \PY{o}{=} \PY{n}{CM}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}
+         \PY{c+c1}{\PYZsh{} Accuracy rate}
+         \PY{n}{AR} \PY{o}{=} \PY{n}{accuracy\PYZus{}score}\PY{p}{(}\PY{n}{Y\PYZus{}test}\PY{p}{,} \PY{n}{Y\PYZus{}preds}\PY{p}{)}
+         \PY{c+c1}{\PYZsh{} Error rate}
+         \PY{n}{ER} \PY{o}{=} \PY{l+m+mf}{1.0} \PY{o}{\PYZhy{}} \PY{n}{AR}
+         \PY{c+c1}{\PYZsh{} Precision}
+         \PY{n}{P} \PY{o}{=} \PY{n}{precision\PYZus{}score}\PY{p}{(}\PY{n}{Y\PYZus{}test}\PY{p}{,} \PY{n}{Y\PYZus{}preds}\PY{p}{)}
+         \PY{c+c1}{\PYZsh{} Recall}
+         \PY{n}{R} \PY{o}{=} \PY{n}{recall\PYZus{}score}\PY{p}{(}\PY{n}{Y\PYZus{}test}\PY{p}{,} \PY{n}{Y\PYZus{}preds}\PY{p}{)}
+         \PY{c+c1}{\PYZsh{} F1 score}
+         \PY{n}{F1} \PY{o}{=} \PY{n}{f1\PYZus{}score}\PY{p}{(}\PY{n}{Y\PYZus{}test}\PY{p}{,} \PY{n}{Y\PYZus{}preds}\PY{p}{)}
+         \PY{c+c1}{\PYZsh{} ROC analysis}
+         \PY{c+c1}{\PYZsh{} TP rates, FP rates and Probability thresholds}
+         \PY{n}{fpr}\PY{p}{,} \PY{n}{tpr}\PY{p}{,} \PY{n}{th} \PY{o}{=} \PY{n}{roc\PYZus{}curve}\PY{p}{(}\PY{n}{Y\PYZus{}test}\PY{p}{,} \PY{n}{Y\PYZus{}preds}\PY{p}{)}
+         \PY{c+c1}{\PYZsh{} AUC score (using auc function)}
+         \PY{n}{AUC} \PY{o}{=} \PY{n}{auc}\PY{p}{(}\PY{n}{fpr}\PY{p}{,} \PY{n}{tpr}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}13}]:} \PY{c+c1}{\PYZsh{} Classification by Logistic Regression}
+         \PY{n}{clf} \PY{o}{=} \PY{n}{LogisticRegression}\PY{p}{(}\PY{n}{solver} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{liblinear}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{clf}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{Y\PYZus{}train}\PY{p}{)}
+         \PY{n}{Y\PYZus{}predsl} \PY{o}{=} \PY{n}{clf}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}
+         \PY{c+c1}{\PYZsh{} Metrics analyses}
+         \PY{n}{CML} \PY{o}{=} \PY{n}{confusion\PYZus{}matrix}\PY{p}{(}\PY{n}{Y\PYZus{}test}\PY{p}{,} \PY{n}{Y\PYZus{}predsl}\PY{p}{)}
+         \PY{n}{tnl}\PY{p}{,} \PY{n}{fpl}\PY{p}{,} \PY{n}{fnl}\PY{p}{,} \PY{n}{tpl} \PY{o}{=} \PY{n}{CML}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}
+         \PY{n}{ARL} \PY{o}{=} \PY{n}{accuracy\PYZus{}score}\PY{p}{(}\PY{n}{Y\PYZus{}test}\PY{p}{,} \PY{n}{Y\PYZus{}predsl}\PY{p}{)}
+         \PY{n}{ERL} \PY{o}{=} \PY{l+m+mf}{1.0} \PY{o}{\PYZhy{}} \PY{n}{ARL}
+         \PY{n}{PL} \PY{o}{=} \PY{n}{precision\PYZus{}score}\PY{p}{(}\PY{n}{Y\PYZus{}test}\PY{p}{,} \PY{n}{Y\PYZus{}predsl}\PY{p}{)}
+         \PY{n}{RL} \PY{o}{=} \PY{n}{recall\PYZus{}score}\PY{p}{(}\PY{n}{Y\PYZus{}test}\PY{p}{,} \PY{n}{Y\PYZus{}predsl}\PY{p}{)}
+         \PY{n}{F1L} \PY{o}{=} \PY{n}{f1\PYZus{}score}\PY{p}{(}\PY{n}{Y\PYZus{}test}\PY{p}{,} \PY{n}{Y\PYZus{}predsl}\PY{p}{)}
+         \PY{n}{fprl}\PY{p}{,} \PY{n}{tprl}\PY{p}{,} \PY{n}{thl} \PY{o}{=} \PY{n}{roc\PYZus{}curve}\PY{p}{(}\PY{n}{Y\PYZus{}test}\PY{p}{,} \PY{n}{Y\PYZus{}predsl}\PY{p}{)}
+         \PY{n}{AUCL} \PY{o}{=} \PY{n}{auc}\PY{p}{(}\PY{n}{fprl}\PY{p}{,} \PY{n}{tprl}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}14}]:} \PY{c+c1}{\PYZsh{} Create a datframe of actual and predicted classifications of the test set}
+         \PY{n}{adult\PYZus{}analysis} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{)}
+         \PY{n}{adult\PYZus{}analysis}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Actual}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{Y\PYZus{}test}
+         \PY{n}{adult\PYZus{}analysis}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{RF\PYZus{}Predicted}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{Y\PYZus{}preds}
+         \PY{n}{adult\PYZus{}analysis}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{LR\PYZus{}Predicted}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{Y\PYZus{}predsl}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}15}]:} \PY{c+c1}{\PYZsh{} Main Body}
+         
+         \PY{c+c1}{\PYZsh{} Main function: Plot a histogram of the standardized fnlwgt data}
+         \PY{k}{def} \PY{n+nf}{\PYZus{}zstdplot\PYZus{}main}\PY{p}{(}\PY{p}{)}\PY{p}{:} 
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{The fnlwgt data plot after normlization by z\PYZhy{}standardization: }\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{adult}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{fnlwgt}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{p}{;}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{The Z\PYZhy{}standardized fnlwgt data}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Final Weight}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Frequency}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+         
+         \PY{k}{def} \PY{n+nf}{\PYZus{}edunumplot\PYZus{}main}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{Plot of the education\PYZhy{}num categorical attribute after data cleaning: }\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{n}{adult2}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{education\PYZhy{}num}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{value\PYZus{}counts}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{kind}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bar}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Education status}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Education\PYZhy{}score}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Frequency}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+             
+         \PY{k}{def} \PY{n+nf}{\PYZus{}workclassplot\PYZus{}main}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{Plot of the workclass categorical attribute after data cleaning: }\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{n}{adult2}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{workclass}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{value\PYZus{}counts}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{kind}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bar}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Work Class by profession}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Work Class}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Frequency}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+             
+         \PY{c+c1}{\PYZsh{} Main function: Print the edited dataframe}
+         \PY{k}{def} \PY{n+nf}{\PYZus{}printdf\PYZus{}main}\PY{p}{(}\PY{p}{)}\PY{p}{:} 
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{The final adult dataframe with the clustered }\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{labels}\PY{l+s+s1}{\PYZdq{}}\PY{l+s+s1}{:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{n+nb}{print}\PY{p}{(}\PY{n}{adult}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Main function: Save the predicted and real test labels as a csv file}
+         \PY{k}{def} \PY{n+nf}{\PYZus{}csvsave\PYZus{}main}\PY{p}{(}\PY{p}{)}\PY{p}{:}   
+             \PY{n}{adult\PYZus{}analysis}\PY{o}{.}\PY{n}{to\PYZus{}csv}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{renjini\PYZhy{}result.csv}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{sep}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{,}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{header} \PY{o}{=} \PY{k+kc}{True}\PY{p}{,} \PY{n}{index} \PY{o}{=} \PY{k+kc}{False}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Main function: Print the classifier and accuracy for the random forest classifier}
+         \PY{k}{def} \PY{n+nf}{\PYZus{}rfclass\PYZus{}main}\PY{p}{(}\PY{p}{)}\PY{p}{:} 
+             \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{Random Forest classifier}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{Confusion matrix:}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{CM}\PY{p}{)}
+             \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{TP, TN, FP, FN:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{tp}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{,}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{tn}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{,}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fp}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{,}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fn}\PY{p}{)}
+             \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{Accuracy rate:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{AR}\PY{p}{)}
+             \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{Error rate:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{ER}\PY{p}{)}
+             \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{Precision:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{n}{P}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+             \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{Recall:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{n}{R}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+             \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{F1 score:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{n}{F1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+             \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{TP rates:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{n}{tpr}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+             \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{FP rates:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{n}{fpr}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+             \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{Probability thresholds:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{n}{th}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+             \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{AUC score (using auc function):}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{n}{AUC}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+             \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{AUC score (using roc\PYZus{}auc\PYZus{}score function):}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{n}{roc\PYZus{}auc\PYZus{}score}\PY{p}{(}\PY{n}{Y\PYZus{}test}\PY{p}{,} \PY{n}{Y\PYZus{}preds}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Main function: Plot the ROC for the RF classifier}
+         \PY{k}{def} \PY{n+nf}{\PYZus{}rfroc\PYZus{}main}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{p}{)}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Receiver Operating Characteristic curve for the Random Forest Classifier}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{xlim}\PY{p}{(}\PY{p}{[}\PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{1.0}\PY{p}{]}\PY{p}{)}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{ylim}\PY{p}{(}\PY{p}{[}\PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{1.05}\PY{p}{]}\PY{p}{)}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{FALSE Positive Rate}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TRUE Positive Rate}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{fpr}\PY{p}{,} \PY{n}{tpr}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ROC curve (area = }\PY{l+s+si}{\PYZpc{}0.2f}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}} \PY{o}{\PYZpc{}} \PY{n}{AUC}\PY{p}{)}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{navy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} \PY{c+c1}{\PYZsh{} reference line for random classifier}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Main function: Print the classifier and accuracy}
+         \PY{k}{def} \PY{n+nf}{\PYZus{}logregclass\PYZus{}main}\PY{p}{(}\PY{p}{)}\PY{p}{:} 
+             \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{Logistic Regression classifier}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{Confusion matrix:}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{CML}\PY{p}{)}
+             \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{TP, TN, FP, FN:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{tpl}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{,}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{tnl}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{,}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fpl}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{,}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fnl}\PY{p}{)}
+             \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{Accuracy rate:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{ARL}\PY{p}{)}
+             \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{Error rate:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{ERL}\PY{p}{)}
+             \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{Precision:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{n}{PL}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+             \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{Recall:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{n}{RL}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+             \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{F1 score:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{n}{F1L}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+             \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{TP rates:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{n}{tprl}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+             \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{FP rates:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{n}{fprl}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+             \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{Probability thresholds:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{n}{thl}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+             \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{AUC score (using auc function):}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{n}{AUCL}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+             \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{AUC score (using roc\PYZus{}auc\PYZus{}score function):}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{n}{roc\PYZus{}auc\PYZus{}score}\PY{p}{(}\PY{n}{Y\PYZus{}test}\PY{p}{,} \PY{n}{Y\PYZus{}predsl}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Main function: Plot the ROC}
+         \PY{k}{def} \PY{n+nf}{\PYZus{}logregroc\PYZus{}main}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{p}{)}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Receiver Operating Characteristic curve for Logistic Regression Classifier}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{xlim}\PY{p}{(}\PY{p}{[}\PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{1.0}\PY{p}{]}\PY{p}{)}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{ylim}\PY{p}{(}\PY{p}{[}\PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{1.05}\PY{p}{]}\PY{p}{)}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{FALSE Positive Rate}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TRUE Positive Rate}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{fprl}\PY{p}{,} \PY{n}{tprl}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ROC curve (area = }\PY{l+s+si}{\PYZpc{}0.2f}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}} \PY{o}{\PYZpc{}} \PY{n}{AUCL}\PY{p}{)}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{navy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} \PY{c+c1}{\PYZsh{} reference line for random classifier}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}19}]:} \PY{k}{if} \PY{n+nv+vm}{\PYZus{}\PYZus{}name\PYZus{}\PYZus{}} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZus{}\PYZus{}main\PYZus{}\PYZus{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}
+         \PY{c+c1}{\PYZsh{} Plot a histogram of the standardized fnlwgt data}
+             \PY{n}{\PYZus{}zstdplot\PYZus{}main}\PY{p}{(}\PY{p}{)}
+         \PY{c+c1}{\PYZsh{} Plot a histogram of the categorical education\PYZhy{}num attribute}
+             \PY{n}{\PYZus{}edunumplot\PYZus{}main}\PY{p}{(}\PY{p}{)}
+         \PY{c+c1}{\PYZsh{} Plot a histogram of the categorical workclass column}
+             \PY{n}{\PYZus{}workclassplot\PYZus{}main}\PY{p}{(}\PY{p}{)}
+         \PY{c+c1}{\PYZsh{} Print the edited dataframe}
+             \PY{n}{\PYZus{}printdf\PYZus{}main}\PY{p}{(}\PY{p}{)}
+         \PY{c+c1}{\PYZsh{} Save the adult\PYZus{}analysis dataframe as a csv}
+             \PY{n}{\PYZus{}csvsave\PYZus{}main}\PY{p}{(}\PY{p}{)}
+         \PY{c+c1}{\PYZsh{} Print the analysis metrics for the Random Forest Classifier}
+             \PY{n}{\PYZus{}rfclass\PYZus{}main}\PY{p}{(}\PY{p}{)}
+         \PY{c+c1}{\PYZsh{} Plot the ROC}
+             \PY{n}{\PYZus{}rfroc\PYZus{}main}\PY{p}{(}\PY{p}{)}
+         \PY{c+c1}{\PYZsh{} Print the analysis metrics for the Random Forest Classifier}
+             \PY{n}{\PYZus{}logregclass\PYZus{}main}\PY{p}{(}\PY{p}{)}
+         \PY{c+c1}{\PYZsh{} Plot the ROC}
+             \PY{n}{\PYZus{}logregroc\PYZus{}main}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+The fnlwgt data plot after normlization by z-standardization: 
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_16_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+Plot of the education-num categorical attribute after data cleaning: 
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_16_3.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+Plot of the workclass categorical attribute after data cleaning: 
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_16_5.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+The final adult dataframe with the clustered "labels":
+     fnlwgt  capital-gain  capital-loss  income Binned\_age  \textbackslash{}
+0 -1.199815      0.755429     -0.217573       1          2   
+1 -1.130503     -0.238499     -0.217573       1          3   
+2  0.452321     -0.238499     -0.217573       1          2   
+3  0.680472     -0.238499     -0.217573       1          3   
+4  1.920656     -0.238499     -0.217573       1          1   
+
+  Binned\_hours-per-week  Government  Private  Unemployed  Bachelor  Master  \textbackslash{}
+0                     3           1        0           0         1       0   
+1                     1           0        0           1         1       0   
+2                     3           0        1           0         0       0   
+3                     3           0        1           0         0       0   
+4                     3           0        1           0         1       0   
+
+   Primary  Professional  Female  Male  labels  
+0        0             0       0     1       2  
+1        0             0       0     1       2  
+2        1             0       0     1       5  
+3        1             0       0     1       2  
+4        0             0       1     0       5  
+
+Random Forest classifier
+
+
+Confusion matrix:
+ [[ 817  659]
+ [ 694 4290]]
+
+TP, TN, FP, FN: 4290 , 817 , 659 , 694
+
+Accuracy rate: 0.7905572755417957
+
+Error rate: 0.20944272445820433
+
+Precision: 0.87
+
+Recall: 0.86
+
+F1 score: 0.86
+
+TP rates: [0.   0.86 1.  ]
+
+FP rates: [0.   0.45 1.  ]
+
+Probability thresholds: [2 1 0]
+
+AUC score (using auc function): 0.71
+
+AUC score (using roc\_auc\_score function): 0.71 
+
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_16_7.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+Logistic Regression classifier
+
+
+Confusion matrix:
+ [[ 650  826]
+ [ 275 4709]]
+
+TP, TN, FP, FN: 4709 , 650 , 826 , 275
+
+Accuracy rate: 0.8295665634674922
+
+Error rate: 0.17043343653250775
+
+Precision: 0.85
+
+Recall: 0.94
+
+F1 score: 0.9
+
+TP rates: [0.   0.94 1.  ]
+
+FP rates: [0.   0.56 1.  ]
+
+Probability thresholds: [2 1 0]
+
+AUC score (using auc function): 0.69
+
+AUC score (using roc\_auc\_score function): 0.69 
+
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_16_9.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    The attributes used were as follows. fnlwgt: Numerical, z-standardized
+values capital-gain: Numerical, z-standardized values capital-loss:
+Numerical, z-standardized values Binned\_age: The numerical `age'
+column, binned and categorized Binned\_hours-per-week: The numerical
+`hours-per-week' column, binned and categorized Male: Categorical column
+denoting the gender Female: Categorical column denoting the gender
+Primary: Categorical column denoting the education level, derived from
+the `education-num' attribute Bachelor: Categorical column denoting the
+education level, derived from the `education-num' attribute Master:
+Categorical column denoting the education level, derived from the
+`education-num' attribute Professional: Categorical column denoting the
+education level, derived from the `education-num' attribute Private: One
+hot encoded category derived from the `workclass' column Government: One
+hot encoded category derived from the `workclass' column Unemployed: One
+hot encoded category derived from the `workclass' column income: Expert
+label column denoting whether the calssification is \textless{}=50000 or
+\textgreater{}50000
+
+Relevant questions: 1. Do the age, education level or gender of the
+individuals affect their annual income? 2. What is the effect of fnlwgt,
+capital-loss and capital-gain variables on the annual income? 3. How
+much does work-hours of the individual influence the individual's annual
+income? For example, is there a direct correlation between the
+work-hours and income? 4. Is the annual income affected by the
+workclass/employment status?
+
+For performing an unsupervised K-means clustering, the 14 attributes in
+the adult dataframe except the `income' column, were loaded into a new
+dataframe termed `adult\_k'. The new dataframe had 14 columns and all
+32297 instances. After clustering, the K-means transformed `labels' were
+appended as a 16th column to the original `adult' dataframe.
+
+I used the random forest and logistic regression classifiers to build
+and test the models. I found that excluding the fnlwgt column improved
+the accuracy of the predictions, so removed it. First, a Random Forest
+classification was performed to predict the income of the test data,
+after training the dataset with 80\% of the data. I found that using the
+non-binned `age' and `hours-per-week' did not yield any worse result
+with the random forest classifier (data not shown) than with the binned
+variables. I used the default probability threshold of 0.5 for
+constructing the confusion matrix and the rest of the metrics. The
+preliminary analysis showed that the accuracy of the prediction was
+approximately 84\%, using the random forest classifier on the
+attributes. The analysis metrics were printed along with the ROC curve.
+The AUC score was 0.70. With the logistic regression classifier, the
+accuracy of the prediction was approximately 83\%. The AUC score was
+0.71. Overall, I found that both the calssifiers showed more or less
+similar predictions, except that logistic regression showed a better
+recall of around 93\%, while random forest maintained recall at 86\%.
+The predicted labels and real values were then loaded into a new
+dataframe labeled `adult\_analysis', and saved as a csv file.
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}
